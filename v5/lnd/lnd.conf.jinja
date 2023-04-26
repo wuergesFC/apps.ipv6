@@ -3,12 +3,17 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 [Application Options]
-listen=0.0.0.0:9735
+alias=ipv6🍋@wuerges.xyz🐍🌍⚡
+color=#ffff00
+listen=
 rpclisten=0.0.0.0:10009
 restlisten=0.0.0.0:8080
 accept-keysend=true
 tlsextraip={{APP_LND_SERVICE_IP}}
 tlsextradomain={{DEVICE_HOSTNAME}}.local
+tlsextradomain={{DEVICE_HOSTNAME}}
+tlsextradomain=*.{{DEVICE_HOSTNAME}}
+exernalhosts={{DEVICE_HOSTNAME}}
 tlsautorefresh=1
 tlsdisableautofill=1
 {% set mainnet = "mainnet" %}
@@ -20,6 +25,35 @@ wallet-unlock-allow-create=true
 gc-canceled-invoices-on-startup=true
 gc-canceled-invoices-on-the-fly=true
 accept-amp=true
+
+;IPV6 wuerges FC
+
+sync-freelist=true
+stagger-initial-reconnect=1
+ignore-historical-gossip-filters=1
+max-cltv-expiry=5000
+routerrpc.attemptcost=10
+routerrpc.attemptcostppm=10
+routerrpc.maxmchistory=10000
+routerrpc.minrtprob=0.005
+numgraphsyncpeers=100
+max-channel-fee-allocation=1.0
+maxpendingchannels=10
+; rpcmiddleware.enable=true
+
+; If true, lnd will start the Prometheus exporter. Prometheus flags are 
+; behind a build/compile flag and are not available by default. lnd must be built 
+; with the monitoring tag; `make && make install tags=monitoring` to activate them.
+prometheus.enable=true
+
+; Specify the interface to listen on for Prometheus connections.
+prometheus.listen=0.0.0.0:8989
+
+; If true, then we'll export additional information that allows users to plot
+; the processing latency, and total time spent across each RPC calls+service.
+; This generates additional memory load for the Prometheus server, and will end
+; up using more disk space over time.
+prometheus.perfhistograms=true
 
 [protocol]
 ; Allow channels larger than 0.16 BTC
@@ -65,3 +99,9 @@ tor.socks={{APP_LND_TOR_IP}}:9050
 tor.targetipaddress={{APP_LND_SERVICE_IP}}
 tor.password={{tor_password}}
 tor.v3=1
+tor.streamisolation=false
+tor.skip-proxy-for-clearnet-targets=true
+
+[bolt]
+db.bolt.auto-compact=true
+db.bolt.auto-compact-min-age=0
