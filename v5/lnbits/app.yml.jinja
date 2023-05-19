@@ -1,7 +1,7 @@
 citadel_version: 4
 metadata:
   name: LNbits
-  version: 0.10.4
+  version: 0.10.6
   category: Lightning Node Management
   tagline: Multi-user wallet management system
   developers:
@@ -26,8 +26,9 @@ metadata:
   torOnly: false
   description: Description coming soon.
 services:
-  main-lnd:
-    image: lnbitsdocker/lnbits-legend:0.10.3@sha256:3e0b59051ec74993d42e9a6db366721d861bc3eeaaafd93bad19204b9980561a
+  main:
+    image: lnbitsdocker/lnbits-legend:0.10.6@sha256:a11aaa6d2b211db4c1ec2cafb7c35057ef45bcf4b98fb3bbf23c5635a0304aff
+    working_dir: /app
     user: 1000:1000
     restart: on-failure
     init: true
@@ -59,3 +60,4 @@ services:
         data: /data
         upgrades: /app/lnbits/upgrades
         extensions: /app/lnbits/extensions
+        super_user: /app/.super_user

@@ -1,7 +1,7 @@
 citadel_version: 4
 metadata:
   name: LND
-  version: 0.16.0-beta
+  version: 0.16.2-beta
   category: Run a Lightning node
   tagline: An open-source Lightning backend
   developers:
@@ -48,7 +48,7 @@ services:
         tor: /var/lib/tor/
 
   service:
-    image: lightninglabs/lnd:v0.16.0-beta@sha256:1b21a570f4298ea77dce64acbcfdcddd3b1b122be5f6136e453b8997dd3c5824
+    image: lightninglabs/lnd:v0.16.2-beta@sha256:795d29d94f845bd070832b097ff75cf0f46cf6daf5e55bf62dc1e4e406e0027d
     user: 1000:1000
     mounts:
       data:
@@ -87,7 +87,7 @@ services:
       SLEEPTIME: 3600
 
   middleware:
-    image: ghcr.io/runcitadel/middleware:main@sha256:fdb8b40a651cb4563c754c3f29d1826d32460100c9846d185e8609f0b357eec6
+    image: ghcr.io/runcitadel/middleware:main@sha256:dc04716f6560ca8bb1f8d1928b7de96884c533d7c2deb5d13eab8bdcb8ed6c32
     depends_on:
     - service
     command: sh -c "./wait-for-manager.sh $MANAGER_IP && ./start.sh"
@@ -95,6 +95,7 @@ services:
     mounts:
       data:
         lnd: /lnd
+        tor: /tor
       jwt-public-key: /jwt-public-key
     environment:
       PORT: '3000'
@@ -109,7 +110,7 @@ services:
       UNSAFE_REMOVE_CORS_CHECK: true
 
   backup:
-    image: runcitadel/ln-backups:main@sha256:bda1b8f6c802c8202274970d594e5d21421a4c7932e2a05cb8b37364e3af5eb3
+    image: runcitadel/ln-backups:main@sha256:83f8ec4b9fca205615adc875cafb5986df0307732515866bcbac3539282979cd
     mounts:
       data:
         lnd: /lnd
