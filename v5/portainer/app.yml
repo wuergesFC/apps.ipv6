@@ -1,0 +1,33 @@
+citadel_version: 4
+
+metadata:
+  category: Portainer
+  name: Portainer BE
+  version: 2.18.3
+  tagline: container management, 
+  description: >-
+    Deploy, configure, troubleshoot and secure containers in minutes on Kubernetes, Docker, and Swarm in any data center, cloud, network edge or IIOT device. 
+  developers: 
+    portainer.io: https://www.portainer.io/
+  permissions:
+  repo: https://github.com/portainer/portainer
+  support: https://github.com/portainer/portainer
+  gallery:
+    - 1.jpg
+    - 2.jpg
+    - 3.jpg
+  defaultPassword: $APP_SEED
+
+services:portainer:
+    container_name: portainer
+    image: portainer/portainer-ee:latest
+    restart: always
+    ports:
+    - 9000:9000
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    - portainer_data:/data
+    networks:
+      default:
+        ipv4_address: $PORTAINER_IP
+        ipv6_address: $PORTAINER_IP6
