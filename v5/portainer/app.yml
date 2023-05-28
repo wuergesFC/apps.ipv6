@@ -18,8 +18,8 @@ metadata:
     - 3.jpg
   defaultPassword: $APP_SEED
 
-services:portainer:
-    container_name: portainer
+services:
+  portainer:
     image: portainer/portainer-ee:latest
     restart: always
     ports:
