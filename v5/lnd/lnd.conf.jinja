@@ -3,12 +3,14 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 [Application Options]
-listen=0.0.0.0:9735
+listen=
 rpclisten=0.0.0.0:10009
 restlisten=0.0.0.0:8080
 accept-keysend=true
 tlsextraip={{APP_LND_SERVICE_IP}}
 tlsextradomain={{DEVICE_HOSTNAME}}.local
+; tlsextradomain={{DEVICE_HOSTNAME}}
+; externalhosts={{DEVICE_HOSTNAME}}
 tlsautorefresh=1
 tlsdisableautofill=1
 {% set mainnet = "mainnet" %}
@@ -20,6 +22,64 @@ wallet-unlock-allow-create=true
 gc-canceled-invoices-on-startup=true
 gc-canceled-invoices-on-the-fly=true
 accept-amp=true
+
+; for a routing node optimal settings by wuergesFC
+; routerrpc.apriori.weight=1
+; sync-freelist=true
+; stagger-initial-reconnect=1
+; ignore-historical-gossip-filters=1
+; max-cltv-expiry=5000
+; routerrpc.attemptcost=90
+; routerrpc.attemptcostppm=900
+; routerrpc.maxmchistory=10000
+; routerrpc.minrtprob=0.001
+; numgraphsyncpeers=100
+; max-channel-fee-allocation=1.0
+; maxpendingchannels=10
+; allow-circular-route=true
+
+[rpcmiddleware]
+
+; Enable the RPC middleware interceptor functionality.
+rpcmiddleware.enable=true
+
+; Time after which a RPC middleware intercept request will time out and return
+; an error if it hasn't yet received a response.
+rpcmiddleware.intercepttimeout=2s
+
+; Add the named middleware to the list of mandatory middlewares. All RPC
+; requests are blocked/denied if any of the mandatory middlewares is not
+; registered. Can be specified multiple times.
+; rpcmiddleware.addmandatory=lnd-middleware-1
+; rpcmiddleware.addmandatory=other-mandatory-middleware
+
+[workers]
+
+; Maximum number of concurrent read pool workers. This number should be
+; proportional to the number of peers. (default: 100)
+; workers.read=200
+
+; Maximum number of concurrent write pool workers. This number should be
+; proportional to the number of CPUs on the host. (default: 8)
+; workers.write=16
+
+; Maximum number of concurrent sig pool workers. This number should be
+; proportional to the number of CPUs on the host. (default: 8)
+; workers.sig=16
+
+; If true, lnd will start the Prometheus exporter. Prometheus flags are 
+; behind a build/compile flag and are not available by default. lnd must be built 
+; with the monitoring tag; `make && make install tags=monitoring` to activate them.
+; prometheus.enable=true
+
+; Specify the interface to listen on for Prometheus connections.
+; prometheus.listen=0.0.0.0:8989
+
+; If true, then we'll export additional information that allows users to plot
+; the processing latency, and total time spent across each RPC calls+service.
+; This generates additional memory load for the Prometheus server, and will end
+; up using more disk space over time.
+; prometheus.perfhistograms=true
 
 [protocol]
 ; Allow channels larger than 0.16 BTC
@@ -57,6 +117,9 @@ watchtower.active=1
 ; to make sure no one steals our money
 [wtclient]
 wtclient.active=1
+; On all ipv4 interfaces on port 9911 and ipv6 localhost port 9912:
+; watchtower.listen=0.0.0.0:9911
+; watchtower.listen=[::1]:9912
 
 [tor]
 tor.active=1
@@ -65,3 +128,11 @@ tor.socks={{APP_LND_TOR_IP}}:9050
 tor.targetipaddress={{APP_LND_SERVICE_IP}}
 tor.password={{tor_password}}
 tor.v3=1
+; to make your node to a hybrid node TOR and CLEARNET
+; tor.streamisolation=false
+; tor.skip-proxy-for-clearnet-targets=true
+
+; to compact your lightning database at every startup
+[bolt]
+db.bolt.auto-compact=true
+db.bolt.auto-compact-min-age=0
